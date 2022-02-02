@@ -14,6 +14,8 @@ class Grid
     row = board[column].length
     board[column].push(chip)
 
+    print_board
+
     update_children(column, row, chip)
     check_connect_four(chip)
   end
@@ -31,12 +33,11 @@ class Grid
     results =
       [
         1 + check_child(chip, chip.sibling_left, 0),
-        1 + check_child(chip, chip.sibling_left, 1),
-        1 + check_child(chip, chip.sibling_left, 2),
-        1 + check_child(chip, chip.sibling_left, 3),
-        1 + check_child(chip, chip.sibling_left, 4)
+        1 + check_child(chip, chip.sibling_right, 1),
+        1 + check_child(chip, chip.child_left, 2),
+        1 + check_child(chip, chip.child_center, 3),
+        1 + check_child(chip, chip.child_right, 4)
       ]
-
     results.any? { |result| result == 4 } ? true : false
   end
 
@@ -66,5 +67,16 @@ class Grid
       end
 
     1 + check_child(root, next_child, direction)
+  end
+
+  def print_board
+    puts "\n\n"
+    6.times do |i|
+      i = 5 - i
+      7.times { |j| print board[j][i].nil? ? '|   ' : "| #{board[j][i].value} " }
+      print "|\n"
+    end
+    puts '-----------------------------'
+    puts "\n\n"
   end
 end

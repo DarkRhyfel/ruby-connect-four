@@ -33,6 +33,13 @@ RSpec.describe Grid do # rubocop:disable Metrics/BlockLength
         expect(grid).to receive(:check_connect_four).with(chip_p1)
         grid.add_chip(column, chip_p1)
       end
+
+      it 'requests to print the board' do
+        column = 0
+
+        expect(grid).to receive(:print_board)
+        grid.add_chip(column, chip_p1)
+      end
     end
 
     context 'when a player adds a chip to full column' do
