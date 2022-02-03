@@ -97,11 +97,11 @@ RSpec.describe Grid do # rubocop:disable Metrics/BlockLength
   describe '#check_connect_four' do # rubocop:disable Metrics/BlockLength
     let(:chip_p1) { Chip.new('Y') }
 
-    context 'after a chip has been linked with its children' do
+    context 'after a chip has been linked with its children' do # rubocop:disable Metrics/BlockLength
       context 'there is no winner (chip has no links)' do
-        it 'returns false' do
+        it 'returns no winner and not full board' do
           result = grid.check_connect_four(chip_p1)
-          expect(result).to eq(false)
+          expect(result).to eq({ winner: false, full_board: false })
         end
       end
 
@@ -110,9 +110,9 @@ RSpec.describe Grid do # rubocop:disable Metrics/BlockLength
           allow(grid).to receive(:check_child).and_return(2, 2, 2, 1, 1)
         end
 
-        it 'returns false' do
+        it 'returns no winner and not full board' do
           result = grid.check_connect_four(chip_p1)
-          expect(result).to eq(false)
+          expect(result).to eq({ winner: false, full_board: false })
         end
       end
 
@@ -121,9 +121,20 @@ RSpec.describe Grid do # rubocop:disable Metrics/BlockLength
           allow(grid).to receive(:check_child).and_return(0, 1, 2, 3, 0)
         end
 
-        it 'returns true' do
+        it 'returns a winner and not full board' do
           result = grid.check_connect_four(chip_p1)
-          expect(result).to eq(true)
+          expect(result).to eq({ winner: true, full_board: false })
+        end
+      end
+
+      context 'the grid if full and there in no winner' do
+        before do
+          allow(grid.board).to receive(:all?).and_return(true)
+        end
+
+        it 'returns no winner and full board' do
+          result = grid.check_connect_four(chip_p1)
+          expect(result).to eq({ winner: false, full_board: true })
         end
       end
     end

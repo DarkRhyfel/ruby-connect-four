@@ -38,7 +38,8 @@ class Grid
         1 + check_child(chip, chip.child_center, 3),
         1 + check_child(chip, chip.child_right, 4)
       ]
-    results.any? { |result| result == 4 } ? true : false
+
+    check_status(results)
   end
 
   private
@@ -67,6 +68,13 @@ class Grid
       end
 
     1 + check_child(root, next_child, direction)
+  end
+
+  def check_status(results)
+    winner = results.any? { |result| result == 4 }
+    full_board = board.all? { |row| row.length == 6 }
+
+    { winner: winner, full_board: full_board }
   end
 
   def print_board

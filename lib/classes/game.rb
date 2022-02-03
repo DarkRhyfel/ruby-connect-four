@@ -19,12 +19,13 @@ class Game
 
     loop do
       column = ask_player_input(@current_player)
-      break if @grid.add_chip(column, Chip.new(player_to_symbol(@current_player)))
+      @result = @grid.add_chip(column, Chip.new(player_to_symbol(@current_player)))
+      break if @result.any? { |_, value| value == true }
 
       change_player
     end
 
-    puts "Player #{@current_player} wins! Congratulations!"
+    puts @result[:winner] ? "Player #{@current_player} wins! Congratulations!" : "It's a tie!"
   end
 
   private
